@@ -1,4 +1,4 @@
-# rs-snake
+# 🐍 rs-snake 🐍
 Snake game written in Rust using Macroquad!
 - Code formatted for Windows only, feel free to make it more compatible if needed 👍
 
