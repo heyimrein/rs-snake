@@ -1,3 +1,5 @@
+#![windows_subsystem = "windows"]
+
 use macroquad::prelude::*;
 use macroquad::rand::gen_range;
 
@@ -31,16 +33,16 @@ async fn main() {
         let snake = &mut state.snake;
 
         // Input Handling
-        if is_key_pressed(KeyCode::Up) {
+        if is_key_pressed(KeyCode::Up) && snake.direction != vec2(0., 1.) {
             snake.direction = vec2(0., -1.);
         }
-        if is_key_pressed(KeyCode::Down) {
+        if is_key_pressed(KeyCode::Down) && snake.direction != vec2(0., -1.) {
             snake.direction = vec2(0., 1.);
         }
-        if is_key_pressed(KeyCode::Left) {
+        if is_key_pressed(KeyCode::Left) && snake.direction != vec2(1., 0.) {
             snake.direction = vec2(-1., 0.);
         }
-        if is_key_pressed(KeyCode::Right) {
+        if is_key_pressed(KeyCode::Right) && snake.direction != vec2(-1., 0.) {
             snake.direction = vec2(1., 0.);
         }
 
