@@ -33,16 +33,22 @@ async fn main() {
         let snake = &mut state.snake;
 
         // Input Handling
-        if is_key_pressed(KeyCode::Up) && snake.direction != vec2(0., 1.) {
+
+        let mut prev_dir = vec2(0., 0.);
+        if snake.segments.len() > 1 {
+            prev_dir = snake.segments[0] - snake.segments[1];
+        }
+
+        if is_key_pressed(KeyCode::Up) && prev_dir != vec2(0., 1.) {
             snake.direction = vec2(0., -1.);
         }
-        if is_key_pressed(KeyCode::Down) && snake.direction != vec2(0., -1.) {
+        if is_key_pressed(KeyCode::Down) && prev_dir != vec2(0., -1.) {
             snake.direction = vec2(0., 1.);
         }
-        if is_key_pressed(KeyCode::Left) && snake.direction != vec2(1., 0.) {
+        if is_key_pressed(KeyCode::Left) && prev_dir != vec2(1., 0.) {
             snake.direction = vec2(-1., 0.);
         }
-        if is_key_pressed(KeyCode::Right) && snake.direction != vec2(-1., 0.) {
+        if is_key_pressed(KeyCode::Right) && prev_dir != vec2(-1., 0.) {
             snake.direction = vec2(1., 0.);
         }
 
@@ -81,10 +87,21 @@ async fn main() {
             if future_pos != state.fruit {
                 snake.segments.pop();
             } else {
-                state.fruit = vec2(
-                    gen_range(0., grid_size.x - 1.).round(),
-                    gen_range(0., grid_size.y - 1.).round()
-                );
+                'fruit_loop: {
+                    state.fruit = vec2(
+                        gen_range(0., grid_size.x - 1.).round(),
+                        gen_range(0., grid_size.y - 1.).round()
+                    );
+
+                    let mut absence_flag = false;
+                    for i in 0..snake.segments.len() {
+                        if state.fruit == snake.segments[i] {
+                            absence_flag = true;
+                            break;
+                        }
+                    }
+                    if !absence_flag { break 'fruit_loop; };
+                }
             }
 
             timer.move_timer = 0.;
