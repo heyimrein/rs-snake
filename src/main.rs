@@ -87,7 +87,7 @@ async fn main() {
             if future_pos != state.fruit {
                 snake.segments.pop();
             } else {
-                'fruit_loop: {
+                loop {
                     state.fruit = vec2(
                         gen_range(0., grid_size.x - 1.).round(),
                         gen_range(0., grid_size.y - 1.).round()
@@ -100,7 +100,7 @@ async fn main() {
                             break;
                         }
                     }
-                    if !absence_flag { break 'fruit_loop; };
+                    if !absence_flag { break; };
                 }
             }
 
